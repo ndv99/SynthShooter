@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://enemymaterial.tres" type="Material" id=1]
+[ext_resource path="res://Scenes/enemy.gd" type="Script" id=2]
+[ext_resource path="res://Audio/robot0.wav" type="AudioStream" id=3]
+[ext_resource path="res://Audio/laser01.wav" type="AudioStream" id=4]
+
+[sub_resource type="PrismMesh" id=1]
+
+[sub_resource type="SphereMesh" id=2]
+
+[sub_resource type="CylinderShape" id=3]
+
+[sub_resource type="SphereShape" id=4]
+radius = 3.0
+
+[node name="Enemy" type="StaticBody"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+script = ExtResource( 2 )
+
+[node name="Body" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, -0.158, 6.64382e-09, 0, -2.38573e-08, -0.044, 0, -0.031, 0 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="Head" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, -0.1, 8.74228e-09, 0, -8.74228e-09, -0.1, 0, 0.228, 0 )
+mesh = SubResource( 2 )
+material/0 = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 0.116, 0, 0, 0, 0.259, 0, 0, 0, 0.115, 0, 0.077, 0 )
+shape = SubResource( 3 )
+
+[node name="RayCast" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.178, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, -3 )
+
+[node name="SightRange" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="SightRange"]
+transform = Transform( 0.692, 0, 0, 0, 0.277, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 4 )
+
+[node name="eyes" type="Spatial" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 1.5
+
+[node name="AlertSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="GunSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 4 )
+[connection signal="body_entered" from="SightRange" to="." method="_on_SightRange_body_entered"]
+[connection signal="body_exited" from="SightRange" to="." method="_on_SightRange_body_exited"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]

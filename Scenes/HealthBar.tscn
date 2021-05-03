@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/health-back.png" type="Texture" id=1]
+[ext_resource path="res://Assets/health-over.png" type="Texture" id=2]
+[ext_resource path="res://Assets/health-progress.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/HealthBar.gd" type="Script" id=4]
+
+[sub_resource type="QuadMesh" id=16]
+
+[sub_resource type="ViewportTexture" id=3]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=2]
+resource_local_to_scene = true
+flags_unshaded = true
+albedo_texture = SubResource( 3 )
+
+[node name="HealthBar" type="MeshInstance"]
+transform = Transform( 0.3, 0, 0, 0, 0.05, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 400, 50 )
+transparent_bg = true
+hdr = false
+render_target_v_flip = true
+gui_snap_controls_to_pixels = false
+
+[node name="Control" type="Control" parent="Viewport"]
+margin_right = 40.0
+margin_bottom = 20.0
+script = ExtResource( 4 )
+
+[node name="Label" type="Label" parent="Viewport/Control"]
+margin_left = 175.0
+margin_top = 18.0
+margin_right = 237.0
+margin_bottom = 32.0
+text = "Health:69"
+align = 1
+valign = 1
+
+[node name="HealthBar" type="TextureProgress" parent="Viewport/Control"]
+visible = false
+margin_right = 400.0
+margin_bottom = 50.0
+texture_under = ExtResource( 1 )
+texture_over = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+tint_progress = Color( 0, 1, 0, 1 )
+
+[node name="Tween" type="Tween" parent="Viewport/Control"]
